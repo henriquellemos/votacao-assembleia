@@ -1,0 +1,51 @@
+package br.com.sicredi.votacao.application.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.service.Tag;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+@Configuration
+@EnableSwagger2
+@Profile({"dev"})
+public class SwaggerConfig {
+
+    @Bean
+    public Docket api() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("br.com.sicredi.votacao.adapter.web"))
+                .paths(PathSelectors.any())
+                .build()
+                .useDefaultResponseMessages(false)
+                .directModelSubstitute(ConteudoVazio.class, Void.class)
+                .tags(new Tag("API Votação - Sicredi", "API de votação em assembléia - Sicredi"))
+                .apiInfo(apiInfo());
+    }
+
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                .title("API Votação - Sicredi")
+                .description("API de votação em assembléia - Sicredi")
+                .version("0.0.1")
+                .contact(new Contact(
+                        "Henrique Lopes Lemos",
+                        "https://www.linkedin.com/in/henriquellemos/",
+                        "henriquellemos@gmail.com"
+                ))
+                .build();
+    }
+
+    /**
+     * Classe usada somente em anotações @ApiResponse para indicar resposta com body vazio
+     */
+    public interface ConteudoVazio{}
+}
