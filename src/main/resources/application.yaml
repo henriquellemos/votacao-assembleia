@@ -1,0 +1,15 @@
+#--------- Spring ----------#
+server:
+  port: 8089
+  servlet:
+    context-path: /votacao
+spring:
+  application:
+    name: Votacao
+    domain: VOTACAO
+
+
+#--------- User Info API ----------#
+user-info:
+  feign:
+    url: https://user-info.herokuapp.com
