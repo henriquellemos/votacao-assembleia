@@ -7,9 +7,31 @@ spring:
   application:
     name: Votacao
     domain: VOTACAO
-
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+#--------- H2 DataBase ----------#
+  h2:
+    console:
+      path: /h2
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:mydb
+    username: votacao
+    password: test
+    driverClassName: org.h2.Driver
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
 
 #--------- User Info API ----------#
 user-info:
   feign:
     url: https://user-info.herokuapp.com
+
+#--------- AWS SNS -----------#
+aws:
+  region: sa-east-1
+  sns:
+    topic:
+      votacao:
+        arn: votacao-pauta
