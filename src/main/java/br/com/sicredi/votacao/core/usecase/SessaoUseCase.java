@@ -2,6 +2,7 @@ package br.com.sicredi.votacao.core.usecase;
 
 import br.com.sicredi.votacao.application.dto.request.SessaoRequest;
 import br.com.sicredi.votacao.application.dto.response.SessaoResponse;
+import br.com.sicredi.votacao.core.mapper.SessaoMapper;
 import br.com.sicredi.votacao.core.port.pauta.PautaOutbound;
 import br.com.sicredi.votacao.core.port.sessao.SessaoInbound;
 import br.com.sicredi.votacao.core.port.sessao.SessaoPersistenceOutbound;
@@ -81,7 +82,7 @@ public class SessaoUseCase implements SessaoInbound {
 
         log.info("Pauta '{}' atualizada.", pautaAtualizada.getId());
 
-        //this.sessaoQueueOutbound.notificar();
+        this.sessaoQueueOutbound.notificar(SessaoMapper.paraDomain(sessaoEntity));
 
         log.info("Fim do processo que contabilizou os votos.");
     }

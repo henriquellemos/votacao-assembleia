@@ -21,6 +21,10 @@ public class SessaoSNS implements SessaoQueueOutbound {
     @Value("${aws.sns.topic.votacao.arn}")
     private String snsTopicArn;
 
+    public SessaoSNS(AmazonSNS amazonSNS) {
+        this.amazonSNS = amazonSNS;
+    }
+
     @Override
     public void notificar(SessaoDomain domain) {
         log.info("Iniciando publish SNS");

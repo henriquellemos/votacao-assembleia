@@ -25,4 +25,11 @@ public class SessaoMapper {
                 .dataExpiracao(entity.getDataExpiracao())
                 .build();
     }
+
+    public static SessaoDomain paraDomain(SessaoEntity sessaoEntity) {
+        return SessaoDomain.builder()
+                .pauta(PautaMapper.paraDomain(sessaoEntity.getPauta()))
+                .id(sessaoEntity.getId())
+                .build();
+    }
 }
