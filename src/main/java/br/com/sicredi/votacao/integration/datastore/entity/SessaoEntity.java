@@ -1,6 +1,6 @@
 package br.com.sicredi.votacao.integration.datastore.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import br.com.sicredi.votacao.integration.datastore.entity.enumerator.SessaoStatus;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.ColumnDefault;
@@ -8,19 +8,18 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
-
 
 @Getter
 @Setter
 @Builder
 @Entity
-@Table(name = "pauta")
+@Table(name = "sessao")
 @AllArgsConstructor
 @NoArgsConstructor
-public class PautaEntity {
+public class SessaoEntity {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -33,38 +32,22 @@ public class PautaEntity {
     @Type(type = "uuid-char")
     private UUID id;
 
-    private String nome;
-    private String descricao;
-    private Boolean votada;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pauta_id")
+    private PautaEntity pauta;
 
-    @OneToOne(mappedBy = "pauta")
-    @JsonManagedReference
-    private SessaoEntity sessao;
+    @Column(name = "data_expiracao")
+    private LocalDateTime dataExpiracao;
 
-    @OneToMany(mappedBy = "pauta")
-    @ToString.Exclude
-    @JsonManagedReference
-    private List<VotoEntity> votos;
-
-    @OneToMany(mappedBy = "pautaVotada")
-    @ToString.Exclude
-    @JsonManagedReference
-    private List<RegistroVotoEntity> registros;
-
-    @Column(name = "total_votos")
-    private Long totalVotos;
-
-    @Column(name = "total_sim")
-    private Long totalSim;
-
-    @Column(name = "total_nao")
-    private Long totalNao;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "sessao_status")
+    private SessaoStatus sessaoStatus;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        PautaEntity that = (PautaEntity) o;
+        SessaoEntity that = (SessaoEntity) o;
         return id != null && Objects.equals(id, that.id);
     }
 

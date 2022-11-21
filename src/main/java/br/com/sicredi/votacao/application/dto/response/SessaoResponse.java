@@ -5,26 +5,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
-@AllArgsConstructor
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PautaResponse {
+public class SessaoResponse {
 
     private UUID id;
-    private String nome;
-    private String descricao;
-    private Boolean votada;
 
-    @JsonProperty("total_votos")
-    private Long totalVotos;
+    @JsonProperty("id_pauta")
+    private UUID idPauta;
 
-    @JsonProperty("total_sim")
-    private Long totalSim;
+    @JsonProperty("sessao_status")
+    private String sessaoStatus;
 
-    @JsonProperty("total_nao")
-    private Long totalNao;
+    @JsonProperty("data_expiracao")
+    private LocalDateTime dataExpiracao;
 }

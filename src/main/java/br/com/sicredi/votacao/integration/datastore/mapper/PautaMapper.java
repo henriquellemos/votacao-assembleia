@@ -7,9 +7,13 @@ public class PautaMapper {
 
     public static PautaEntity paraEntity(PautaDomain pautaDomain){
         return PautaEntity.builder()
+                .id(pautaDomain.getId())
                 .nome(pautaDomain.getNome())
                 .descricao(pautaDomain.getDescricao())
-                .votada(false)
+                .votada(pautaDomain.getVotada() != null && pautaDomain.getVotada() ? pautaDomain.getVotada() : false)
+                .totalSim(pautaDomain.getQuantidadeVotoSim())
+                .totalNao(pautaDomain.getQuantidadeVotoNao())
+                .totalVotos(pautaDomain.getTotalVotos())
                 .build();
     }
 }

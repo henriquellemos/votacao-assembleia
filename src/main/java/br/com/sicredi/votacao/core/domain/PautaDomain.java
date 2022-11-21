@@ -16,5 +16,9 @@ public class PautaDomain {
     private UUID id;
     private String nome;
     private String descricao;
-    private String votada;
+    private Boolean votada;
+    private SessaoDomain sessaoDomain;
+    private Long quantidadeVotoSim;
+    private Long quantidadeVotoNao;
+    private Long totalVotos;
 }

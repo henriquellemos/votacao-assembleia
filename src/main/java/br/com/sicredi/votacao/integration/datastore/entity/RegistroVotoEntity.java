@@ -1,6 +1,5 @@
 package br.com.sicredi.votacao.integration.datastore.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.ColumnDefault;
@@ -8,19 +7,18 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
-
 
 @Getter
 @Setter
 @Builder
 @Entity
-@Table(name = "pauta")
+@Table(name = "registro_voto")
 @AllArgsConstructor
 @NoArgsConstructor
-public class PautaEntity {
+public class RegistroVotoEntity {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -33,38 +31,22 @@ public class PautaEntity {
     @Type(type = "uuid-char")
     private UUID id;
 
-    private String nome;
-    private String descricao;
-    private Boolean votada;
+    @ManyToOne
+    @JoinColumn(name = "associado_id")
+    private AssociadoEntity associado;
 
-    @OneToOne(mappedBy = "pauta")
-    @JsonManagedReference
-    private SessaoEntity sessao;
+    @ManyToOne
+    @JoinColumn(name = "pauta_id")
+    private PautaEntity pautaVotada;
 
-    @OneToMany(mappedBy = "pauta")
-    @ToString.Exclude
-    @JsonManagedReference
-    private List<VotoEntity> votos;
-
-    @OneToMany(mappedBy = "pautaVotada")
-    @ToString.Exclude
-    @JsonManagedReference
-    private List<RegistroVotoEntity> registros;
-
-    @Column(name = "total_votos")
-    private Long totalVotos;
-
-    @Column(name = "total_sim")
-    private Long totalSim;
-
-    @Column(name = "total_nao")
-    private Long totalNao;
+    @Column(name = "data_voto")
+    private LocalDateTime dataVoto;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        PautaEntity that = (PautaEntity) o;
+        RegistroVotoEntity that = (RegistroVotoEntity) o;
         return id != null && Objects.equals(id, that.id);
     }
 
