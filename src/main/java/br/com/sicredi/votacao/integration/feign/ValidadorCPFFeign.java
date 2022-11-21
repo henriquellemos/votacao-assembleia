@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface ValidadorCPFFeign {
 
     @GetMapping(value = "/users/{cpf}")
-    ResponseEntity<UserInfoResponse> getUserInfo(@PathVariable String cpf);
+    ResponseEntity<UserInfoResponse> getUserInfo(@PathVariable Long cpf);
 }
