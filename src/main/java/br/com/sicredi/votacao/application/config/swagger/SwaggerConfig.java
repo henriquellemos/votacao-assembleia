@@ -1,8 +1,7 @@
-package br.com.sicredi.votacao.application.config;
+package br.com.sicredi.votacao.application.config.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -15,7 +14,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
-@Profile({"dev"})
 public class SwaggerConfig {
 
     @Bean
@@ -25,8 +23,6 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage("br.com.sicredi.votacao.adapter.web"))
                 .paths(PathSelectors.any())
                 .build()
-                .useDefaultResponseMessages(false)
-                .directModelSubstitute(ConteudoVazio.class, Void.class)
                 .tags(new Tag("API Votação - Sicredi", "API de votação em assembléia - Sicredi"))
                 .apiInfo(apiInfo());
     }
@@ -43,9 +39,4 @@ public class SwaggerConfig {
                 ))
                 .build();
     }
-
-    /**
-     * Classe usada somente em anotações @ApiResponse para indicar resposta com body vazio
-     */
-    public interface ConteudoVazio{}
 }
