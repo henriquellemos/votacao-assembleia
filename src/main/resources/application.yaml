@@ -1,0 +1,54 @@
+#--------- Spring ----------#
+server:
+  port: 8089
+  servlet:
+    context-path: /votacao
+spring:
+  application:
+    name: Votacao
+    domain: VOTACAO
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+#--------- H2 DataBase ----------#
+  h2:
+    console:
+      path: /h2
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:mydb
+    username: votacao
+    password: test
+    driverClassName: org.h2.Driver
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+
+#--------- User Info API ----------#
+user-info:
+  feign:
+    url: https://user-info.herokuapp.com
+
+#--------- AWS SNS -----------#
+aws:
+  region: sa-east-1
+  sns:
+    topic:
+      votacao:
+        arn: arn:aws:sns:us-east-1:000000000000:votacao-pauta
+
+cloud:
+  aws:
+    region:
+      auto: false
+      static: us-east-1
+      use-default-aws-region-chain: true
+    stack: false
+    stack.auto: false
+logging:
+  level:
+    com:
+      amazonaws:
+        internal:
+          InstanceMetadataServiceResourceFetcher: error
+        util:
+          EC2MetadataUtils: error
