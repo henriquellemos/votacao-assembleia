@@ -13,7 +13,7 @@ public class SNSConfig {
     public AmazonSNS amazonSNS(){
         return AmazonSNSClient.builder()
                 .withEndpointConfiguration(
-                        new AwsClientBuilder.EndpointConfiguration("http://localhost:4566", "sa-east-1")
+                        new AwsClientBuilder.EndpointConfiguration("http://localhost:4566", "us-east-1")
                 )
                 .build();
     }
