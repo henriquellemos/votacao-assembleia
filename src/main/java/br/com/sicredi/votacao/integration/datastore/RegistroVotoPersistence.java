@@ -2,6 +2,7 @@ package br.com.sicredi.votacao.integration.datastore;
 
 import br.com.sicredi.votacao.core.exception.AssociadoJaVotouException;
 import br.com.sicredi.votacao.core.port.voto.RegistroVotoOutbound;
+import br.com.sicredi.votacao.core.port.voto.VotoOutbound;
 import br.com.sicredi.votacao.integration.datastore.entity.AssociadoEntity;
 import br.com.sicredi.votacao.integration.datastore.entity.PautaEntity;
 import br.com.sicredi.votacao.integration.datastore.entity.SessaoEntity;
@@ -17,9 +18,11 @@ import static br.com.sicredi.votacao.core.mapper.RegistroVotoMapper.paraEntity;
 public class RegistroVotoPersistence implements RegistroVotoOutbound {
 
     private final RegistroVotoRepository registroVotoRepository;
+    private final VotoOutbound votoOutbound;
 
-    public RegistroVotoPersistence(RegistroVotoRepository registroVotoRepository) {
+    public RegistroVotoPersistence(RegistroVotoRepository registroVotoRepository, VotoOutbound votoOutbound) {
         this.registroVotoRepository = registroVotoRepository;
+        this.votoOutbound = votoOutbound;
     }
 
     @Override
@@ -29,11 +32,14 @@ public class RegistroVotoPersistence implements RegistroVotoOutbound {
                     + "' já votou na pauta '" + pauta.getId() + "'.");
         }
 
+        log.info("Salvando voto!");
+        this.votoOutbound.salvar(voto, pauta);
+
         try {
             this.registroVotoRepository.save(paraEntity(pauta, associado));
             return true;
         } catch (Exception ex){
-            log.info("Não foi possível concluir o voto para associado {} e pauta {}.", associado.getCpf(), pauta.getId());
+            log.error("Não foi possível concluir o voto para associado {} e pauta {}.", associado.getCpf(), pauta.getId());
             return false;
         }
     }

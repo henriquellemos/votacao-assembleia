@@ -20,6 +20,8 @@ public class PautaMapper {
                 .descricao(pautaEntity.getDescricao())
                 .votada(pautaEntity.getVotada())
                 .totalVotos(pautaEntity.getTotalVotos())
+                .quantidadeVotoSim(pautaEntity.getTotalSim())
+                .quantidadeVotoNao(pautaEntity.getTotalNao())
                 .build();
     }
 }

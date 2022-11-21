@@ -10,7 +10,8 @@ public enum TipoProblema {
     TEMPO_DE_SESSAO_EXPIRADO("/tempo-expirado-sessao", "Tempo para votação excedido"),
     PARAMETRO_INVALIDO("/parametro-invalido", "Parâmetro inserido inválido"),
     APLICACAO_ERRO("/aplicacao-down", "Aplicação caiu e impossibilitou alguns processamentos"),
-    ERRO_NEGOCIO("/erro-servico", "Aplicação foi interrompida por erro no fluxo de negócio");
+    ERRO_NEGOCIO("/erro-servico", "Aplicação foi interrompida por erro no fluxo de negócio"),
+    ASSOCIADO_DESABILITADO("/associado-desabilitado", "Associado está desabilitado para votar.");
 
     private String uri;
     private String titulo;

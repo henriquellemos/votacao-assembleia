@@ -1,9 +1,6 @@
 package br.com.sicredi.votacao.application.config.handler;
 
-import br.com.sicredi.votacao.core.exception.RecursoNaoEncontradoException;
-import br.com.sicredi.votacao.core.exception.ServicoException;
-import br.com.sicredi.votacao.core.exception.SessaoNaoConcluidaException;
-import br.com.sicredi.votacao.core.exception.TempoExcedidoException;
+import br.com.sicredi.votacao.core.exception.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -48,6 +45,16 @@ public class ApiExceptionHandler {
         return handleExceptionInternal(ex, problema, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
+    @ExceptionHandler(AssociacaoDesabilitadoParaVotoException.class)
+    protected ResponseEntity<Object> handleAssociacaoDesabilitadoParaVotoException(AssociacaoDesabilitadoParaVotoException ex, WebRequest request) {
+        var problema = criarProblemaBuilder(HttpStatus.UNPROCESSABLE_ENTITY, TipoProblema.ASSOCIADO_DESABILITADO,
+                "CPF do associado não o permite votar.")
+                .mensagemUsuario(ex.getMessage())
+                .build();
+
+        return handleExceptionInternal(ex, problema, new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY, request);
+    }
+
     @ExceptionHandler(ServicoException.class)
     protected ResponseEntity<Object> handleServicoException(ServicoException ex, WebRequest request){
         var problema = criarProblemaBuilder(HttpStatus.UNPROCESSABLE_ENTITY, TipoProblema.ERRO_NEGOCIO,
@@ -76,6 +83,16 @@ public class ApiExceptionHandler {
                 .build();
 
         return handleExceptionInternal(ex, problema, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(AssociadoJaVotouException.class)
+    protected ResponseEntity<Object> handleAssociadoJaVotouException(AssociadoJaVotouException ex, WebRequest request) {
+        var problema = criarProblemaBuilder(HttpStatus.UNPROCESSABLE_ENTITY, TipoProblema.ERRO_NEGOCIO,
+                "Associado já efetuou o voto.")
+                .mensagemUsuario(ex.getMessage())
+                .build();
+
+        return handleExceptionInternal(ex, problema, new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY, request);
     }
 
     @ResponseBody

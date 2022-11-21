@@ -36,11 +36,13 @@ public class SessaoSNS implements SessaoQueueOutbound {
             request.setTopicArn(snsTopicArn);
 
             PublishResult resultado = this.amazonSNS.publish(request);
-            log.info("Publish na SNS efetuada com sucesso: '{}'", resultado.getSdkHttpMetadata().toString());
+            log.info("Publish na SNS efetuada com sucesso: '{}'", resultado.getSdkHttpMetadata().getHttpStatusCode());
 
         } catch (AmazonSNSException ex) {
-            log.info("Erro ao efetuar Publish na SNS: '{}'", ex.getErrorMessage(), ex);
+            log.error("Erro ao efetuar Publish na SNS: '{}'", ex.getErrorMessage(), ex);
             throw new ServicoException("Erro ao efetuar Publish na SNS para sessão '"+ domain.getId() +"'.");
+        } catch (Exception e){
+            log.error("Erro: ", e);
         }
     }
 
